@@ -1,0 +1,59 @@
+---
+# - name: Download node_exporter
+#   ansible.builtin.get_url:
+#     url: https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-amd64.tar.gz
+#     dest: /tmp/
+#     mode: 0755
+#
+# - name: Untar the archive with binaries
+#   ansible.builtin.unarchive:
+#     src: "/tmp/node_exporter-1.3.1.linux-amd64.tar.gz"
+#     dest: "/tmp"
+#     remote_src: yes
+#
+# - name: Launch node_exporter
+#   shell: "/tmp/node_exporter-1.3.1.linux-amd64/node_exporter &"
+#   async: 10
+#
+# - name: Download prometheus
+#   ansible.builtin.get_url:
+#     url: https://github.com/prometheus/prometheus/releases/download/v2.37.0/prometheus-2.37.0.linux-amd64.tar.gz
+#     dest: /tmp/
+#     mode: 0755
+#
+# - name: Untar the archive with binaries
+#   ansible.builtin.unarchive:
+#     src: "/tmp/prometheus-2.37.0.linux-amd64.tar.gz"
+#     dest: "/tmp"
+#     remote_src: yes
+#
+# - name: Upload prometheus config
+#   copy:
+#     src: "prometheus.yml"
+#     dest: "/tmp/prometheus-2.37.0.linux-amd64/prometheus.yml"
+#     mode: 0755
+#   register: prometheus_config_uploaded
+#   until: prometheus_config_uploaded is succeeded
+#
+#
+# - name: Launch prometheus
+#   shell: "/tmp/prometheus-2.37.0.linux-amd64/prometheus --config.file=/tmp/prometheus-2.37.0.linux-amd64/prometheus.yml &"
+#   async: 10
+#
+# - name: Upload grafana tar from managing host
+#   copy:
+#     src: grafana-enterprise-9.1.2.linux-amd64.tar.gz
+#     dest: /tmp/
+#     mode: 0755
+#   register: grafans_tar_uploaded
+#   until: grafans_tar_uploaded is succeeded
+#
+# - name: Untar the archive with binaries
+#   ansible.builtin.unarchive:
+#     src: "/tmp/grafana-enterprise-9.1.2.linux-amd64.tar.gz"
+#     dest: "/tmp"
+#     remote_src: yes
+
+- name: Start grafana server
+  shell: "sudo /tmp/grafana-9.1.2/bin/grafana-server --homepath=/tmp/grafana-9.1.2 &"
+  async: 10
